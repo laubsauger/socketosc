@@ -32,6 +32,6 @@ go to `https://experiments.thornebrandt.com/socketDrawing`  in a browser and dra
 * Normalize inputs of x and y relative to screen.  
 * Fix drawing on mobile browser. 
 * Test different browser versions and phones. 
-* Test landscape mode on phone. 
-
+* Test landscape mode on phone.
+* Create permanent QR code. 
 
