@@ -22,9 +22,9 @@ Start the app
 npm start
 ```
 
-Open Touch Designer and listen to port  `57121` on `127.0.0.1`  in a **OSC IN** DAT 
+Open Touch Designer and listen to port  `57121` on `127.0.0.1`  in a **OSC IN** DAT or CHOP
 
-go to `https://experiments.thornebrandt.com/socketDrawing`  in a browser and draw on the screen. 
+go to `https://experiments.thornebrandt.com/socketDrawing/`  in a browser and draw on the screen. 
 
 
 ## TODO 

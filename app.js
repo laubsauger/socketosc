@@ -32,7 +32,7 @@ const initSocketConnection = () => {
 
     socket.on("introduction", (payload) => {
         var msg = {
-            address: "/" + payload.id + "/",
+            address: "/" + payload.client_index + "/",
             args: [
                 {
                     type: "s",
@@ -49,7 +49,7 @@ const initSocketConnection = () => {
 
     socket.on("identity-declared", (payload) => {
         var msg = {
-            address: "/" + payload.id + "/",
+            address: "/" + payload.client_index + "/",
             args: [
                 {
                     type: "s",
@@ -70,11 +70,15 @@ const initSocketConnection = () => {
 
     socket.on("onMessage", (payload) => {
         var msg = {
-            address: "/" + payload.id + "/",
+            address: "/" + payload.client_index + "/",
             args: [
                 {
                     type: "s",
                     value: payload.message,
+                },
+                {
+                    type: "s",
+                    value: payload.id,
                 }
             ]
         };
@@ -83,7 +87,7 @@ const initSocketConnection = () => {
 
     socket.on("onMouseMove", (payload) => {
         var msg = {
-            address: "/" + payload.id + "/",
+            address: "/" + payload.client_index + "/",
             args: [
                 {
                     type: "s",
@@ -101,6 +105,7 @@ const initSocketConnection = () => {
         };
         oscServer.send(msg);
     });
+
 };
 
 async function initOSC() {
