@@ -136,6 +136,36 @@ const initSocketConnection = () => {
         oscServer.send(msg);
     });
 
+    socket.on("userDisconnected", (payload) => {
+        //sending a zero mouse on disconnect.
+        var msg = {
+            address: "/" + payload.client_index + "/",
+            args: [
+                {
+                    type: "s",
+                    value: "mouseMove",
+                },
+                {
+                    type: "f",
+                    value: 0,
+                },
+                {
+                    type: "f",
+                    value: 0,
+                },
+                {
+                    type: "f",
+                    value: 0,
+                },
+            ]
+
+        }
+        oscServer.send(msg);
+
+    });
+
+
+
 };
 
 async function initOSC() {
