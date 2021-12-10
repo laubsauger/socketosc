@@ -111,6 +111,7 @@ const initSocketConnection = () => {
                 };
                 break;
         }
+        console.log("sending osc message: ", msg);
         oscServer.send(msg);
     });
 
