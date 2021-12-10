@@ -69,19 +69,48 @@ const initSocketConnection = () => {
     });
 
     socket.on("onMessage", (payload) => {
-        var msg = {
-            address: "/" + payload.client_index + "/",
-            args: [
-                {
-                    type: "s",
-                    value: payload.message,
-                },
-                {
-                    type: "s",
-                    value: payload.id,
-                }
-            ]
-        };
+        let msg;
+        switch (payload.message) {
+            case "mouseUp":
+                //interpreting mouse up and a mouseMove with a zero value. 
+                msg = {
+                    address: "/" + payload.client_index + "/",
+                    args: [
+                        {
+                            type: "s",
+                            value: "mouseMove",
+                        },
+                        {
+                            type: "f",
+                            value: payload.x,
+                        },
+                        {
+                            type: "f",
+                            value: payload.y,
+                        },
+                        {
+                            type: "f",
+                            value: 0,
+                        }
+                    ]
+                };
+                break;
+            default:
+                msg = {
+                    address: "/" + payload.client_index + "/",
+                    args: [
+                        {
+                            type: "s",
+                            value: payload.message,
+                        },
+                        {
+                            type: "s",
+                            value: payload.id,
+                        }
+                    ]
+                };
+                break;
+        }
         oscServer.send(msg);
     });
 
@@ -100,6 +129,10 @@ const initSocketConnection = () => {
                 {
                     type: "f",
                     value: payload.y
+                },
+                {
+                    type: "f",
+                    value: 1,
                 }
             ]
         };
