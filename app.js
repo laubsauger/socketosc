@@ -103,10 +103,6 @@ const initSocketConnection = () => {
                             type: "s",
                             value: payload.message,
                         },
-                        {
-                            type: "s",
-                            value: payload.id,
-                        }
                     ]
                 };
                 break;
