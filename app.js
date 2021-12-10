@@ -86,7 +86,7 @@ const initSocketConnection = () => {
                         },
                         {
                             type: "f",
-                            value: payload.y,
+                            value: 1 - payload.y, //reversed for uv
                         },
                         {
                             type: "f",
@@ -128,7 +128,7 @@ const initSocketConnection = () => {
                 },
                 {
                     type: "f",
-                    value: payload.y
+                    value: 1 - payload.y //reversed for uv coordinates
                 },
                 {
                     type: "f",
