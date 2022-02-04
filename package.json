@@ -1,19 +1,26 @@
 {
-    "name": "socket-server",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "node app.js"
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "dependencies": {
-        "https": "^1.0.0",
-        "osc": "^2.4.2",
-        "socket.io": "^4.4.0",
-        "socket.io-client": "^4.4.0"
-    }
+  "name": "socket-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./dist/server.js",
+    "compile": "tsc && npm run start",
+    "dev": "nodemon -e ts  --exec \"npm run compile\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "https": "^1.0.0",
+    "osc": "^2.4.2",
+    "socket.io": "^4.4.0",
+    "socket.io-client": "^4.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.14",
+    "nodemon": "^2.0.15",
+    "typescript": "^4.5.5"
+  }
 }
