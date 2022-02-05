@@ -138,7 +138,7 @@ const initSocketConnection = (oscServer:osc.UDPPort, webSocketHost:string) => {
     //sending a zero mouse on disconnect.
     oscServer.send(createMessageArgs(
       payload.client_index,
-      'connected',
+      'Connected',
       [
         {
           type: 'T'
@@ -150,7 +150,7 @@ const initSocketConnection = (oscServer:osc.UDPPort, webSocketHost:string) => {
   socket.on('userDisconnected', (payload) => {
     oscServer.send(createMessageArgs(
       payload.client_index,
-      'connected',
+      'Connected',
       [
         {
           type: 'F'
@@ -163,9 +163,13 @@ const initSocketConnection = (oscServer:osc.UDPPort, webSocketHost:string) => {
 
 const createMessageArgs = (clientIndex:number, action:string, fields:any) => {
   return {
-    address: `/${clientIndex}/${action}`,
+    address: `/${clientIndex}/${capitalizeFirstChar(action)}`,
     args: fields,
   }
+}
+
+const capitalizeFirstChar = (inputString:string) => {
+  return inputString.charAt(0).toUpperCase() + inputString.slice(1).toLowerCase();
 }
 
 const handleMessagePayload = (payload:any) => {
@@ -198,7 +202,7 @@ const handleMessagePayload = (payload:any) => {
       return [
         createMessageArgs(
           payload.client_index,
-          `${payload.message}X`,
+          `X`,
           [
             {
               type: 'f',
@@ -207,7 +211,7 @@ const handleMessagePayload = (payload:any) => {
           ]),
         createMessageArgs(
           payload.client_index,
-          `${payload.message}Y`,
+          `Y`,
           [
             {
               type: 'f',

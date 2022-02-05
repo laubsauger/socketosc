@@ -128,14 +128,14 @@ const initSocketConnection = (oscServer, webSocketHost) => {
     });
     socket.on('newUserConnected', (payload) => {
         //sending a zero mouse on disconnect.
-        oscServer.send(createMessageArgs(payload.client_index, 'connected', [
+        oscServer.send(createMessageArgs(payload.client_index, 'Connected', [
             {
                 type: 'T'
             }
         ]));
     });
     socket.on('userDisconnected', (payload) => {
-        oscServer.send(createMessageArgs(payload.client_index, 'connected', [
+        oscServer.send(createMessageArgs(payload.client_index, 'Connected', [
             {
                 type: 'F'
             }
@@ -144,9 +144,12 @@ const initSocketConnection = (oscServer, webSocketHost) => {
 };
 const createMessageArgs = (clientIndex, action, fields) => {
     return {
-        address: `/${clientIndex}/${action}`,
+        address: `/${clientIndex}/${capitalizeFirstChar(action)}`,
         args: fields,
     };
+};
+const capitalizeFirstChar = (inputString) => {
+    return inputString.charAt(0).toUpperCase() + inputString.slice(1).toLowerCase();
 };
 const handleMessagePayload = (payload) => {
     switch (payload.message) {
@@ -168,13 +171,13 @@ const handleMessagePayload = (payload) => {
             ];
         case 'paint':
             return [
-                createMessageArgs(payload.client_index, `${payload.message}X`, [
+                createMessageArgs(payload.client_index, `X`, [
                     {
                         type: 'f',
                         value: payload.x,
                     },
                 ]),
-                createMessageArgs(payload.client_index, `${payload.message}Y`, [
+                createMessageArgs(payload.client_index, `Y`, [
                     {
                         type: 'f',
                         value: 1 - payload.y, //reversed for uv
