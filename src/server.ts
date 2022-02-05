@@ -22,8 +22,7 @@ async function initOSCUDPServer() {
   console.log('attempting to set up osc websocket port');
 
   const oscServer = new osc.UDPPort({
-    localAddress: '0.0.0.0',
-    localPort: 57121
+    ...config.oscOverUDP
   });
 
   oscServer.on('ready', () => {
@@ -126,36 +125,13 @@ const initSocketConnection = (oscServer:osc.UDPPort, webSocketHost:string) => {
   });
 
   socket.on('onMessage', (payload) => {
-    const msg = handleMessagePayload(payload);
+    const msgs = handleMessagePayload(payload);
 
-    console.log('sending osc message: ', msg);
-    oscServer.send(msg);
-  });
-
-  socket.on('onMouseMove', (payload) => {
-    const msg = {
-      address: '/' + payload.client_index + '/',
-      args: [
-        {
-          type: 's',
-          value: 'mouseMove',
-        },
-        {
-          type: 'f',
-          value: payload.x
-        },
-        {
-          type: 'f',
-          value: 1 - payload.y //reversed for uv coordinates
-        },
-        {
-          type: 'f',
-          value: 1,
-        }
-      ]
-    };
-
-    oscServer.send(msg);
+    msgs.map(msg => {
+      console.log('sending osc message');
+      console.dir(msg, { depth: 2 })
+      oscServer.send(msg);
+    })
   });
 
   socket.on('newUserConnected', (payload) => {
@@ -198,41 +174,73 @@ const initSocketConnection = (oscServer:osc.UDPPort, webSocketHost:string) => {
 };
 
 
+const createMessageArgs = (clientIndex:number, action:string, fields:any) => {
+  return {
+    address: `/${clientIndex}/${action}`,
+    args: fields,
+  }
+}
+
 const handleMessagePayload = (payload:any) => {
   switch (payload.message) {
-    case 'mouseUp':
-      //interpreting mouse up and a mouseMove with a zero value.
-      return {
-        address: '/' + payload.client_index + '/',
-        args: [
-          {
-            type: 's',
-            value: 'mouseMove',
-          },
-          {
-            type: 'f',
-            value: payload.x,
-          },
-          {
-            type: 'f',
-            value: 1 - payload.y, //reversed for uv
-          },
-          {
-            type: 'f',
-            value: 0,
-          }
-        ]
-      };
+    case 'mouseDown':
+      return [
+        createMessageArgs(
+          payload.client_index,
+          payload.message,
+          [
+            {
+              type: payload.state ? 'T' : 'F'
+            }
+          ]
+        )
+      ];
+    case 'button':
+      return [
+        createMessageArgs(
+          payload.client_index,
+          payload.btnId,
+          [
+            {
+              type: payload.state ? 'T' : 'F'
+            }
+          ]
+        )
+      ];
+    case 'paint':
+      return [
+        createMessageArgs(
+          payload.client_index,
+          `${payload.message}X`,
+          [
+            {
+              type: 'f',
+              value: payload.x,
+            },
+          ]),
+        createMessageArgs(
+          payload.client_index,
+          `${payload.message}Y`,
+          [
+            {
+              type: 'f',
+              value: 1 - payload.y, //reversed for uv
+            },
+          ])
+      ]
     default:
-      return {
-        address: '/' + payload.client_index + '/',
-        args: [
-          {
-            type: 's',
-            value: payload.message,
-          },
-        ]
-      };
+      return [
+        createMessageArgs(
+          payload.client_index,
+          payload.message,
+          [
+            {
+              type: 's',
+              value: payload.message,
+            },
+          ]
+        )
+      ];
   }
 };
 

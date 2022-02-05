@@ -33,10 +33,7 @@ function init() {
 function initOSCUDPServer() {
     return __awaiter(this, void 0, void 0, function* () {
         console.log('attempting to set up osc websocket port');
-        const oscServer = new osc_1.default.UDPPort({
-            localAddress: '0.0.0.0',
-            localPort: 57121
-        });
+        const oscServer = new osc_1.default.UDPPort(Object.assign({}, config_1.default.oscOverUDP));
         oscServer.on('ready', () => {
             console.log('Listening for OSC over UDP.');
             const ipAddresses = (0, utils_1.getIPAddresses)();
@@ -122,33 +119,12 @@ const initSocketConnection = (oscServer, webSocketHost) => {
         oscServer.send(msg);
     });
     socket.on('onMessage', (payload) => {
-        const msg = handleMessagePayload(payload);
-        console.log('sending osc message: ', msg);
-        oscServer.send(msg);
-    });
-    socket.on('onMouseMove', (payload) => {
-        const msg = {
-            address: '/' + payload.client_index + '/',
-            args: [
-                {
-                    type: 's',
-                    value: 'mouseMove',
-                },
-                {
-                    type: 'f',
-                    value: payload.x
-                },
-                {
-                    type: 'f',
-                    value: 1 - payload.y //reversed for uv coordinates
-                },
-                {
-                    type: 'f',
-                    value: 1,
-                }
-            ]
-        };
-        oscServer.send(msg);
+        const msgs = handleMessagePayload(payload);
+        msgs.map(msg => {
+            console.log('sending osc message');
+            console.dir(msg, { depth: 2 });
+            oscServer.send(msg);
+        });
     });
     socket.on('newUserConnected', (payload) => {
         //sending a zero mouse on disconnect.
@@ -185,41 +161,54 @@ const initSocketConnection = (oscServer, webSocketHost) => {
         oscServer.send(msg);
     });
 };
+const createMessageArgs = (clientIndex, action, fields) => {
+    return {
+        address: `/${clientIndex}/${action}`,
+        args: fields,
+    };
+};
 const handleMessagePayload = (payload) => {
     switch (payload.message) {
-        case 'mouseUp':
-            //interpreting mouse up and a mouseMove with a zero value.
-            return {
-                address: '/' + payload.client_index + '/',
-                args: [
+        case 'mouseDown':
+            return [
+                createMessageArgs(payload.client_index, payload.message, [
                     {
-                        type: 's',
-                        value: 'mouseMove',
-                    },
+                        type: payload.state ? 'T' : 'F'
+                    }
+                ])
+            ];
+        case 'button':
+            return [
+                createMessageArgs(payload.client_index, payload.btnId, [
+                    {
+                        type: payload.state ? 'T' : 'F'
+                    }
+                ])
+            ];
+        case 'paint':
+            return [
+                createMessageArgs(payload.client_index, `${payload.message}X`, [
                     {
                         type: 'f',
                         value: payload.x,
                     },
+                ]),
+                createMessageArgs(payload.client_index, `${payload.message}Y`, [
                     {
                         type: 'f',
                         value: 1 - payload.y, //reversed for uv
                     },
-                    {
-                        type: 'f',
-                        value: 0,
-                    }
-                ]
-            };
+                ])
+            ];
         default:
-            return {
-                address: '/' + payload.client_index + '/',
-                args: [
+            return [
+                createMessageArgs(payload.client_index, payload.message, [
                     {
                         type: 's',
                         value: payload.message,
                     },
-                ]
-            };
+                ])
+            ];
     }
 };
 init().then(() => {

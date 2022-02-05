@@ -5,6 +5,7 @@ type UDPPortOptions = {
   localPort: number,
   remoteAddress?: string,
   remotePort?: number,
+  metadata?: boolean,
 }
 
 type MessageArg = {
