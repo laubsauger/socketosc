@@ -128,37 +128,18 @@ const initSocketConnection = (oscServer, webSocketHost) => {
     });
     socket.on('newUserConnected', (payload) => {
         //sending a zero mouse on disconnect.
-        const msg = {
-            address: '/' + payload.client_index + '/',
-            args: [
-                {
-                    type: 's',
-                    value: 'connected',
-                },
-                {
-                    type: 'f',
-                    value: 1,
-                },
-            ]
-        };
-        oscServer.send(msg);
+        oscServer.send(createMessageArgs(payload.client_index, 'connected', [
+            {
+                type: 'T'
+            }
+        ]));
     });
     socket.on('userDisconnected', (payload) => {
-        //sending a zero mouse on disconnect.
-        const msg = {
-            address: '/' + payload.client_index + '/',
-            args: [
-                {
-                    type: 's',
-                    value: 'connected',
-                },
-                {
-                    type: 'f',
-                    value: 0,
-                },
-            ]
-        };
-        oscServer.send(msg);
+        oscServer.send(createMessageArgs(payload.client_index, 'connected', [
+            {
+                type: 'F'
+            }
+        ]));
     });
 };
 const createMessageArgs = (clientIndex, action, fields) => {

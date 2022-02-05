@@ -136,40 +136,27 @@ const initSocketConnection = (oscServer:osc.UDPPort, webSocketHost:string) => {
 
   socket.on('newUserConnected', (payload) => {
     //sending a zero mouse on disconnect.
-    const msg = {
-      address: '/' + payload.client_index + '/',
-      args: [
+    oscServer.send(createMessageArgs(
+      payload.client_index,
+      'connected',
+      [
         {
-          type: 's',
-          value: 'connected',
-        },
-        {
-          type: 'f',
-          value: 1,
-        },
+          type: 'T'
+        }
       ]
-    };
-
-    oscServer.send(msg);
+    ));
   });
 
   socket.on('userDisconnected', (payload) => {
-    //sending a zero mouse on disconnect.
-    const msg = {
-      address: '/' + payload.client_index + '/',
-      args: [
+    oscServer.send(createMessageArgs(
+      payload.client_index,
+      'connected',
+      [
         {
-          type: 's',
-          value: 'connected',
-        },
-        {
-          type: 'f',
-          value: 0,
-        },
+          type: 'F'
+        }
       ]
-    };
-
-    oscServer.send(msg);
+    ));
   });
 };
 
