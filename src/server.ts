@@ -208,7 +208,8 @@ const handleMessagePayload = (payload:any) => {
               type: 'f',
               value: payload.x,
             },
-          ]),
+          ]
+        ),
         createMessageArgs(
           payload.client_index,
           `Y`,
@@ -217,7 +218,8 @@ const handleMessagePayload = (payload:any) => {
               type: 'f',
               value: 1 - payload.y, //reversed for uv
             },
-          ])
+          ]
+        )
       ]
     default:
       return [
