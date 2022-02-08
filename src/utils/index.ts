@@ -4,9 +4,9 @@ const getIPAddresses = () => {
   const interfaces = os.networkInterfaces();
   const ipAddresses = [];
 
-  if (!interfaces || !interfaces.length) {
+  if (!interfaces) {
     console.log('No network interfaces reported');
-    return [];
+    throw new Error('No network interfaces reported');
   }
 
   for (let deviceName in interfaces) {

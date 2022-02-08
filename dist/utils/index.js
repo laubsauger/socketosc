@@ -8,9 +8,9 @@ const os_1 = __importDefault(require("os"));
 const getIPAddresses = () => {
     const interfaces = os_1.default.networkInterfaces();
     const ipAddresses = [];
-    if (!interfaces || !interfaces.length) {
+    if (!interfaces) {
         console.log('No network interfaces reported');
-        return [];
+        throw new Error('No network interfaces reported');
     }
     for (let deviceName in interfaces) {
         const addresses = interfaces[deviceName];
