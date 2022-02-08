@@ -7,8 +7,8 @@ const config = {
     localAddress: '0.0.0.0',
     localPort: 57121,
     metadata: true,
-    broadcast: true,
-    multicastMembership: '192.168.1.255:57121',
+    // broadcast: true,
+    // multicastMembership: '192.168.1.255:57121',
   },
 };
 
