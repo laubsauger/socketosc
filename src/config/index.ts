@@ -1,6 +1,6 @@
 const config = {
   // webSocketHost: 'http://localhost:8080',
-  webSocketHost: 'http://192.168.1.85:8080',
+  webSocketHost: 'http://192.168.1.101:8080',
   oscOverUDP: {
     // remoteAddress: '192.168.1.255',
     // remotePort: 57121,
