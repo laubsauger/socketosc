@@ -72,12 +72,17 @@ function initOSCUDPServer() {
 }
 const initSocketConnection = (oscServer, webSocketHost) => {
     console.log('osc setup complete. attempting to connect to: ' + webSocketHost);
-    const socket = (0, socket_io_client_1.default)(webSocketHost, { secure: true });
+    const socket = (0, socket_io_client_1.default)(webSocketHost, {
+        secure: true,
+        reconnection: true,
+        reconnectionDelay: 500,
+        reconnectionAttempts: 5
+    });
     socket.on('connect', () => {
         console.log('Successfully connected to ' + webSocketHost);
     });
     socket.on('disconnect', (reason) => {
-        console.log('Disconnected from ' + webSocketHost, reason);
+        console.log('!! Disconnected from ' + webSocketHost, reason);
     });
     socket.on('connect_failed', (err) => {
         console.log('connect_failed', err);
