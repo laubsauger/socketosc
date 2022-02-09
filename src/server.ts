@@ -68,12 +68,16 @@ async function initOSCUDPServer() {
 }
 
 const initSocketConnection = (oscServer:osc.UDPPort, webSocketHost:string) => {
-  console.log('osc setup complete. attempting to connect to : ' + webSocketHost);
+  console.log('osc setup complete. attempting to connect to: ' + webSocketHost);
 
-  const socket = io(webSocketHost, {secure: true});
+  const socket = io(webSocketHost, { secure: true });
 
   socket.on('connect', () => {
     console.log('Successfully connected to ' + webSocketHost);
+  });
+
+  socket.on('disconnect', (reason) => {
+    console.log('Disconnected from ' + webSocketHost, reason);
   });
 
   socket.on('connect_failed', (err:any) => {
