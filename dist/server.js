@@ -76,78 +76,59 @@ const initSocketConnection = (oscServer, webSocketHost) => {
         secure: true,
         reconnection: true,
         reconnectionDelay: 500,
-        reconnectionAttempts: 5
+        reconnectionAttempts: 5,
     });
     socket.on('connect', () => {
         console.log('Successfully connected to ' + webSocketHost);
+        console.log('Joining room', config_1.default.socketRoom);
+        socket.emit('OSC_JOIN_REQUEST', config_1.default.socketRoom);
     });
     socket.on('disconnect', (reason) => {
-        console.log('!! Disconnected from ' + webSocketHost, reason);
+        console.log('!! Disconnected from ' + webSocketHost);
+        console.log(reason);
+        // disconnect initiated by the server, reconnect manually
+        if (reason === 'io server disconnect') {
+            socket.connect();
+        }
     });
-    socket.on('connect_failed', (err) => {
-        console.log('connect_failed', err);
+    socket.on('OSC_JOIN_ACCEPTED', (data) => {
+        console.log('OSC_JOIN_ACCEPTED', config_1.default.socketRoom, data);
     });
-    socket.on('error', (err) => {
-        console.log('error: ', err);
+    socket.on('OSC_JOIN_REJECTED', (data) => {
+        console.log('OSC_JOIN_REJECTED', config_1.default.socketRoom, data);
     });
-    socket.on('introduction', (payload) => {
-        const msg = {
-            address: '/' + payload.client_index + '/',
-            args: [
-                {
-                    type: 's',
-                    value: 'connected'
-                },
-                {
-                    type: 's',
-                    value: payload.id
-                }
-            ]
-        };
-        oscServer.send(msg);
+    socket.on('OSC_JOINED', (data) => {
+        console.log('OSC_JOINED', config_1.default.socketRoom, data);
     });
-    socket.on('identity-declared', (payload) => {
-        const msg = {
-            address: '/' + payload.client_index + '/',
-            args: [
-                {
-                    type: 's',
-                    value: 'identity-declared'
-                },
-                {
-                    type: 's',
-                    value: payload.identity,
-                },
-                {
-                    type: 's',
-                    value: payload.id
-                }
-            ]
-        };
-        oscServer.send(msg);
-    });
-    socket.on('onMessage', (payload) => {
+    socket.on('OSC_CTRL_MESSAGE', (payload) => {
+        console.log('OSC_CTRL_MESSAGE', payload);
         const msgs = handleMessagePayload(payload);
+        console.log('MESSAGES', msgs.length);
         msgs.map(msg => {
             console.log('sending osc message');
             console.dir(msg, { depth: 2 });
             oscServer.send(msg);
         });
     });
-    socket.on('newUserConnected', (payload) => {
-        //sending a zero mouse on disconnect.
-        oscServer.send(createMessageArgs(payload.client_index, 'Connected', [
-            {
-                type: 'T'
-            }
-        ]));
+    socket.on('OSC_CTRL_USER_JOINED', (payload) => {
+        console.log('OSC_CTRL_USER_JOINED', payload);
+        oscServer.send(createMessageArgs(payload.client_index, 'Connected', [{ type: 'T' }]));
     });
-    socket.on('userDisconnected', (payload) => {
-        oscServer.send(createMessageArgs(payload.client_index, 'Connected', [
-            {
-                type: 'F'
-            }
-        ]));
+    socket.on('OSC_CTRL_USER_LEFT', (payload) => {
+        console.log('OSC_CTRL_USER_LEFT', payload);
+        oscServer.send(createMessageArgs(payload.client_index, 'Connected', [{ type: 'F' }]));
+    });
+    socket.on('reconnect_attempt', (data) => {
+        console.log('reconnect_attempt', data);
+    });
+    socket.on('reconnect', (data) => {
+        console.log('reconnect', data);
+    });
+    socket.on('connect_failed', (err) => {
+        console.log('connect_failed', err);
+    });
+    socket.on('error', (err) => {
+        console.log('error: ', err);
     });
 };
 const createMessageArgs = (clientIndex, action, fields) => {
@@ -204,7 +185,7 @@ const handleMessagePayload = (payload) => {
     }
 };
 init().then(() => {
-    console.log('socketosc server started');
+    // console.log('socketosc server started');
 }).catch((error) => {
     console.log('socketosc server start error', error);
 });
