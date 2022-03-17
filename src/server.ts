@@ -137,6 +137,13 @@ const initSocketConnection = (oscServer:osc.UDPPort, webSocketHost:string) => {
     ));
   });
 
+  socket.on('DISCO_DIFFUSION_PROMPT', (payload) => {
+    console.log('DISCO_DIFFUSION_PROMPT', payload);
+    const msg = handleMessagePayload({ ...payload, message: 'discoDiffusion' });
+
+    oscServer.send(msg[0]);
+  });
+
   socket.on('reconnect_attempt', (data) => {
     console.log('reconnect_attempt', data);
   });
@@ -211,6 +218,31 @@ const handleMessagePayload = (payload:any) => {
             {
               type: 'f',
               value: 1 - payload.y, //reversed for uv
+            },
+          ]
+        )
+      ]
+    case 'discoDiffusion':
+      return [
+        createMessageArgs(
+          1,
+          'disco',
+          [
+            {
+              type: 's',
+              value: payload.text,
+            },
+            {
+              type: 's',
+              value: payload.imageURL,
+            },
+            {
+              type: 's',
+              value: payload.email,
+            },
+            {
+              type: 's',
+              value: payload.name,
             },
           ]
         )
