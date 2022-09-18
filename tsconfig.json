@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
+    "experimentalDecorators": true,
     "target": "es6",
-    "module": "commonjs",
+    "module": "esnext",
+    "jsx": "react",
     "sourceMap": true,
     "outDir": "./dist",
     "strict": true,

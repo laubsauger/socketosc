@@ -80,7 +80,7 @@ const initSocketConnection = (oscServer, webSocketHost) => {
     });
     socket.on('connect', () => {
         console.log('Successfully connected to ' + webSocketHost);
-        console.log('Joining room', config_1.default.socketRoom);
+        console.log('Request join to control room...', config_1.default.socketRoom);
         socket.emit('OSC_JOIN_REQUEST', config_1.default.socketRoom);
     });
     socket.on('disconnect', (reason) => {

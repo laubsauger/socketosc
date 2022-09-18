@@ -80,7 +80,7 @@ const initSocketConnection = (oscServer:osc.UDPPort, webSocketHost:string) => {
   socket.on('connect', () => {
     console.log('Successfully connected to ' + webSocketHost);
 
-    console.log('Joining room', config.socketRoom)
+    console.log('Request join to control room...', config.socketRoom)
     socket.emit('OSC_JOIN_REQUEST', config.socketRoom);
   });
 
