@@ -1,3 +1,5 @@
+process.env.NODE_OPTIONS = undefined;
+
 const path = require('path');
 
 const { app, BrowserWindow } = require('electron');
