@@ -5,7 +5,7 @@
   "main": "public/electron.js",
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
-    "release": "electron-builder --mac --windows --publish always",
+    "release": "electron-builder --mac --windows --linux --publish always",
     "start": "electron-forge start",
     "build": "react-scripts build",
     "test": "react-scripts test",
