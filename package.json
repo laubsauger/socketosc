@@ -1,6 +1,6 @@
 {
   "name": "socket-server",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "private": true,
   "main": "public/electron.js",
   "description": "socketosc server wrapped in electron",
