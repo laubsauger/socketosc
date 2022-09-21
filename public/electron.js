@@ -31,7 +31,7 @@ function createWindow() {
     width: 800,
     height: 800,
     webPreferences: {
-      nodeIntegration: true,
+      nodeIntegration: false,
       contextIsolation: true,
       preload: path.join(__dirname, 'preload.js'),
     },
@@ -43,9 +43,9 @@ function createWindow() {
       : `file://${path.join(__dirname, '../build/index.html')}`
   );
 
-  if (isDev) {
+  // if (isDev) {
     win.webContents.openDevTools({ mode: 'detach' });
-  }
+  // }
 }
 
 app.whenReady().then(async () => {
