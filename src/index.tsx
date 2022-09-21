@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import { StoreProvider } from './contexts/storeContext';
 
 import "bootstrap/dist/css/bootstrap.css";
@@ -14,9 +14,9 @@ import reportWebVitals from './reportWebVitals';
 ReactDOM.render(
   <React.StrictMode>
     <StoreProvider store={new RootStore()}>
-      <BrowserRouter>
+      <HashRouter>
         <App />
-      </BrowserRouter>
+      </HashRouter>
     </StoreProvider>
   </React.StrictMode>,
   document.getElementById('root')
