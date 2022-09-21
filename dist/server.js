@@ -49,24 +49,24 @@ function initOSCUDPServer() {
         });
         oscServer.open();
         // debug osc messages.
-        // setInterval(function () {
-        //     var msg = {
-        //         address: '/hello/from/oscjs',
-        //         args: [
-        //             {
-        //                 type: 'f',
-        //                 key: 'x',
-        //                 value: Math.random()
-        //             },
-        //             {
-        //                 type: 'f',
-        //                 key: 'y',
-        //                 value: Math.random()
-        //             }
-        //         ]
-        //     };
-        //     oscServer.send(msg);
-        // }, 1000);
+        setInterval(function () {
+            var msg = {
+                address: '/hello/from/oscjs',
+                args: [
+                    {
+                        type: 'f',
+                        key: 'x',
+                        value: Math.random()
+                    },
+                    {
+                        type: 'f',
+                        key: 'y',
+                        value: Math.random()
+                    }
+                ]
+            };
+            oscServer.send(msg);
+        }, 1000);
         return oscServer;
     });
 }

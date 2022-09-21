@@ -15,6 +15,7 @@
     "start:app": "react-scripts start",
     "start:server": "tsc && cross-env NODE_ENV=production node ./dist/server.js",
     "dev:server": "nodemon -e ts  --exec \"tsc && cross-env NODE_ENV=development node ./dist/server.js\"",
+    "dev:serverdist": "cross-env NODE_ENV=development node ./dist/server.js",
     "package": "electron-forge package",
     "make": "electron-forge make"
   },
@@ -47,6 +48,7 @@
     "bootstrap": "^5.1.3",
     "bootstrap-dark-5": "^1.1.3",
     "cross-env": "^7.0.3",
+    "electron-is-dev": "^2.0.0",
     "electron-squirrel-startup": "^1.0.0",
     "https": "^1.0.0",
     "mobx": "^6.3.13",
@@ -61,8 +63,7 @@
     "sass": "^1.49.7",
     "socket.io": "^4.4.0",
     "socket.io-client": "^4.4.0",
-    "web-vitals": "^2.1.4",
-    "electron-is-dev": "^2.0.0"
+    "web-vitals": "^2.1.4"
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.66",
@@ -83,13 +84,19 @@
   },
   "build": {
     "win": {
-      "publish": ["github"]
+      "publish": [
+        "github"
+      ]
     },
     "mac": {
-      "publish": ["github"]
+      "publish": [
+        "github"
+      ]
     },
     "linux": {
-      "publish": ["github"]
+      "publish": [
+        "github"
+      ]
     }
   },
   "config": {

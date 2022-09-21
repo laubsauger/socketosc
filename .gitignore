@@ -75,6 +75,4 @@ crashlytics-build.properties
 
 **/certs
 **/ssl_certs
-public/config.js
-config.js
 out/

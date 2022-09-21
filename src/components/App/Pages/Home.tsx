@@ -1,18 +1,23 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import {Button, Card, Col} from "react-bootstrap";
-import { Link } from "react-router-dom";
+import {Card, Col} from "react-bootstrap";
+import SessionList from "../../SessionList";
 
 const Home: React.FC = (props) => {
   return (
-    <Col className="mt-5 offset-lg-2 col-lg-8 col-md-12">
+    <Col className="mt-5">
       <Card>
         <Card.Body className="text-center">
-          <Card.Title>OSC control at your fingertips</Card.Title>
-          <Card.Text>Participate in live projection mapping</Card.Text>
-          <Link to={'/join'}>
-            <Button variant="outline-info">Join session</Button>
-          </Link>
+          <Card.Title>Select session to join</Card.Title>
+          <Card.Text>
+            Requires proper local setup to connect to your devices via OSC-over-UDP
+            <div className="text-muted">
+              Learn more
+            </div>
+          </Card.Text>
+
+          <SessionList />
+
         </Card.Body>
       </Card>
     </Col>

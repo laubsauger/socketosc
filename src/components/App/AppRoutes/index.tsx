@@ -5,6 +5,8 @@ import LoadingSpinner from "../../LoadingSpinner";
 import DefaultLayout from "../Layouts/Default";
 
 const HomePage = lazy(() => import('../Pages/Home'));
+const SessionPage = lazy(() => import('../Pages/Session'));
+
 const NotFoundPage = lazy(() => import('../Pages/NotFound'));
 
 const AppRoutes = () => {
@@ -19,6 +21,16 @@ const AppRoutes = () => {
             </Suspense>
           }
         />
+
+        <Route
+          path='/session/:instanceId'
+          element={
+            <Suspense fallback={<LoadingSpinner />}>
+              <SessionPage />
+            </Suspense>
+          }
+        />
+
         {/* NOT FOUND catch all */}
         <Route
           path='*'

@@ -263,8 +263,8 @@ const handleMessagePayload = (payload:any) => {
   }
 };
 
-init().then(() => {
-  // console.log('socketosc server started');
-}).catch((error) => {
-  console.log('socketosc server start error', error);
-});
+// init().then(() => {
+//   console.log('socketosc server started');
+// }).catch((error) => {
+//   console.log('socketosc server start error', error);
+// });

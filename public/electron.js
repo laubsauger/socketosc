@@ -1,49 +1,84 @@
 process.env.NODE_OPTIONS = undefined;
 
 const path = require('path');
-
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const isDev = require('electron-is-dev');
+const SocketOSCServer = require('./server');
+
+function handleSetTitle (event, title) {
+  const webContents = event.sender;
+  const win = BrowserWindow.fromWebContents(webContents);
+  win.setTitle(title);
+}
+
+async function handleServerStart (event, instanceId) {
+  const webContents = event.sender;
+  const win = BrowserWindow.fromWebContents(webContents);
+
+  console.log('handleServerStart', instanceId);
+  const server = new SocketOSCServer(win);
+  await server.init(instanceId);
+}
+
+async function handleServerStop (event, message) {
+  console.log('handleServerStop', message);
+  //@todo: close socketosc / oscudp whatever stuffs
+}
+
 
 function createWindow() {
-  // Create the browser window.
   const win = new BrowserWindow({
     width: 800,
-    height: 600,
+    height: 800,
     webPreferences: {
       nodeIntegration: true,
+      contextIsolation: true,
+      preload: path.join(__dirname, 'preload.js'),
     },
   });
 
-  // and load the index.html of the app.
-  // win.loadFile("index.html");
   win.loadURL(
     isDev
       ? 'http://localhost:3000'
       : `file://${path.join(__dirname, '../build/index.html')}`
   );
-  // Open the DevTools.
+
   if (isDev) {
     win.webContents.openDevTools({ mode: 'detach' });
   }
 }
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.whenReady().then(createWindow);
+app.whenReady().then(async () => {
+  ipcMain.handle('set-title', handleSetTitle);
+  ipcMain.handle('server-start', handleServerStart);
+  ipcMain.handle('server-stop', handleServerStop);
 
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
-app.on('window-all-closed', () => {
+  ipcMain.on('toMain', (event, args) => {
+    console.log('received from renderer', args)
+    // const webContents = event.sender;
+    // const win = BrowserWindow.fromWebContents(webContents);
+    // win.webContents.send('fromMain', { EPIC: 'RESPONSE'});
+  });
+
+  createWindow();
+
+  app.on('activate', function () {
+    if (BrowserWindow.getAllWindows().length === 0) {
+      createWindow();
+    }
+  })
+})
+
+app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') {
     app.quit();
   }
-});
+})
 
-app.on('activate', () => {
-  if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
+// Logging any exceptions
+process.on('uncaughtException', (error) => {
+  console.log(`Exception: ${error}`);
+  if (process.platform !== 'darwin') {
+    app.quit();
   }
 });

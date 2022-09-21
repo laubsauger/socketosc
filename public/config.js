@@ -1,14 +1,11 @@
 const config = {
   webSocketHost: process.env.NODE_ENV === 'production' ? 'https://socket.osc.link' : 'http://localhost:8080',
-  socketRoomPrefix: `control`,
-  socketRoom: `control:1`,
+  socketRoomPrefix: 'control',
   oscOverUDP: {
-    localAddress: '127.0.0.1',
+    localAddress: '0.0.0.0',
     localPort: 57121,
     metadata: true,
   },
 };
 
-console.log(process.env.NODE_ENV)
-
-export default config;
+module.exports = config;

@@ -18,6 +18,21 @@ export type RoomState = {
   currentSlot?: number;
 }
 
+export type Instance = {
+  id: number,
+  name: string,
+  description: string,
+  settings: {
+    slots: number,
+    randomPick: boolean,
+    controls: {
+      xy: boolean,
+      buttons: number,
+      fader: number,
+    }
+  }
+}
+
 export interface ISocketStore {
   connectionState: ConnectionState,
   roomState: RoomState,
@@ -45,6 +60,8 @@ export class SocketStore implements ISocketStore {
 
   @observable connectionState = Object.assign({}, connectionStateStub);
   @observable roomState = Object.assign({}, roomStateStub);
+  @observable availableInstances:Instance[] = [];
+  @observable currentInstance:Instance|undefined = undefined;
 
   constructor(rootStore: RootStore) {
     makeAutoObservable(this);
@@ -72,5 +89,14 @@ export class SocketStore implements ISocketStore {
 
   @action resetRoomState() {
     this.roomState = Object.assign({}, roomStateStub);
+  }
+
+  @action setAvailableInstances(instances:Instance[]) {
+    console.log(instances);
+    this.availableInstances = instances;
+  }
+
+  @action setCurrentInstance(instance:Instance|undefined) {
+    this.currentInstance = instance;
   }
 }
