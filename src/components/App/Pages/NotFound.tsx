@@ -18,6 +18,6 @@ const NotFoundPage = () => {
       </Row>
     </Container>
   );
-)};
+};
 
 export default NotFoundPage;
