@@ -160,12 +160,12 @@ class SocketOSCServer {
       ));
     });
 
-    socket.on('DISCO_DIFFUSION_PROMPT', (payload) => {
-      console.log('DISCO_DIFFUSION_PROMPT', payload);
-      const msg = this.handleMessagePayload({ ...payload, message: 'discoDiffusion' });
-
-      oscServer.send(msg[0]);
-    });
+    // socket.on('DISCO_DIFFUSION_PROMPT', (payload) => {
+    //   console.log('DISCO_DIFFUSION_PROMPT', payload);
+    //   const msg = this.handleMessagePayload({ ...payload, message: 'discoDiffusion' });
+    //
+    //   oscServer.send(msg[0]);
+    // });
 
     socket.on('reconnect_attempt', (data) => {
       console.log('reconnect_attempt', data);
@@ -255,6 +255,19 @@ class SocketOSCServer {
                 type: 's',
                 value: payload.name,
               },
+            ]
+          )
+        ]
+      case 'textPrompt':
+        return [
+          createMessageArgs(
+            payload.client_index,
+            'text',
+            [
+              {
+                type: 's',
+                value: payload.text,
+              }
             ]
           )
         ]

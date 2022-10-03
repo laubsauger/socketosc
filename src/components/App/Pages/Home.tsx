@@ -5,7 +5,7 @@ import SessionList from "../../SessionList";
 
 const Home: React.FC = (props) => {
   return (
-    <Col className="mt-5">
+    <Col className="mt-4">
       <Card>
         <Card.Body className="text-center">
           <Card.Title>Select session to join</Card.Title>

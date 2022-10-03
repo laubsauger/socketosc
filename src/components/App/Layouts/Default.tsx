@@ -2,7 +2,6 @@ import React from "react";
 import {Outlet} from "react-router-dom";
 import {Container, Row} from "react-bootstrap";
 import Navigation from "../Navigation";
-import Footer from "../Footer";
 
 const Default = () => {
   return (
@@ -15,7 +14,6 @@ const Default = () => {
           </Row>
         </Container>
       </main>
-      <Footer/>
     </div>
   );
 };

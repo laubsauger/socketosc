@@ -32,7 +32,7 @@ const SessionInfo = (props:any) => {
   }, [onReceiveFromMain]);
 
   return (
-    <Container className="SessionInfo pointer-events-none mt-5">
+    <Container className="SessionInfo pointer-events-none mt-4">
       <Row>
         <Col lg={5}>
           <Col lg={6} md={12} className="mb-md-3 mb-sm-3">

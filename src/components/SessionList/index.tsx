@@ -28,7 +28,7 @@ const SessionList = () => {
   return (
     <Col className="mt-3">
       <div>
-        <h5>Available Sessions</h5>
+        <h5 className="mb-3">Available Sessions</h5>
         { isLoadingInstances && <LoadingSpinner size='small'/> }
         { !isLoadingInstances && socketStore.availableInstances.length ?
           <Accordion >
@@ -37,11 +37,11 @@ const SessionList = () => {
                 <Accordion.Header>{ instance.id } :: { instance.name }</Accordion.Header>
                 <Accordion.Body>
                   <Row>
-                    <Col lg={6} md={12} className="mb-md-3 mb-sm-3">
+                    <Col lg={6} md={12} className="mb-3">
                       <h6 className="text-muted">Description</h6>
                       <div>{ instance.description }</div>
                     </Col>
-                    <Col lg={3} md={6} className="mb-sm-3">
+                    <Col lg={3} md={6} className="mb-3">
                       <h6 className="text-muted">Settings</h6>
                       <div>
                         <div>slots: { instance.settings.slots }</div>
