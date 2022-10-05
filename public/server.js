@@ -193,7 +193,8 @@ class SocketOSCServer {
             payload.message,
             [
               {
-                type: payload.state ? 'T' : 'F'
+                type: 'i',
+                value: payload.state ? 1 : 0
               }
             ]
           )
@@ -205,7 +206,8 @@ class SocketOSCServer {
             payload.btnId,
             [
               {
-                type: payload.state ? 'T' : 'F'
+                type: 'i',
+                value: payload.state ? 1 : 0
               }
             ]
           )

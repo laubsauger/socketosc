@@ -15,7 +15,7 @@ const Navigation = () => {
             height="30"
             className="d-inline-block align-top"
           />
-          <div className="mx-2 font-monospace" style={{fontSize: "16px"}}>OSC.<i>Link</i> - SocketOSC Server</div>
+          <div className="mx-2 font-monospace" style={{fontSize: "16px"}}>OSC.<i>Link</i> - SocketOSC Server - v{process.env.REACT_APP_VERSION}</div>
         </Navbar.Brand>
       </Container>
     </Navbar>
