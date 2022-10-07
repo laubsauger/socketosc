@@ -7,7 +7,7 @@ let validChannels = [ 'fromMain' ];
 
 contextBridge.exposeInMainWorld('electronAPI', {
   setTitle: (title) => ipcRenderer.invoke('set-title', title),
-  serverStart: (instanceId) => ipcRenderer.invoke('server-start', instanceId),
+  serverStart: (instanceId, localPort, remotePort) => ipcRenderer.invoke('server-start', instanceId, localPort, remotePort),
   serverStop: (instanceId) => ipcRenderer.invoke('server-stop', instanceId),
   // serverLog: (message) => ipcRenderer.invoke('server-log', message),
   send: (channel, data) => {

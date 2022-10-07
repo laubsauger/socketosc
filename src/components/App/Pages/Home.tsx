@@ -1,9 +1,29 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import { observer } from 'mobx-react-lite';
-import {Card, Col} from "react-bootstrap";
+import {Card, Col, Form, InputGroup} from "react-bootstrap";
 import SessionList from "../../SessionList";
+import config from "../../../config";
+import {useStores} from "../../../hooks/useStores";
 
 const Home: React.FC = (props) => {
+  const { socketStore } = useStores();
+
+  const handleLocalPortNumberChange = useCallback((ev) => {
+    const portNumber = Number(ev.target.value);
+
+    if (portNumber) {
+      socketStore.setOscLocalPort(portNumber);
+    }
+  }, [socketStore]);
+
+  const handleRemotePortNumberChange = useCallback((ev) => {
+    const portNumber = Number(ev.target.value);
+
+    if (portNumber) {
+      socketStore.setOscRemotePort(portNumber);
+    }
+  }, [socketStore]);
+
   return (
     <Col className="mt-4">
       <Card>
@@ -15,6 +35,36 @@ const Home: React.FC = (props) => {
               Learn more
             </div>
           </Card.Text>
+
+          <div className="bg-black rounded-3 p-2 d-flex justify-content-between">
+            <Form.Group className="d-flex align-items-center" controlId="port-input">
+              <Form.Label className="flex-shrink-0 mb-0">Remote OSC Port (UDP) </Form.Label>
+              <InputGroup className="ms-2">
+                <Form.Control name="port-input"
+                              type="number"
+                              min="1"
+                              max="65535"
+                              required={true}
+                              onChange={handleRemotePortNumberChange}
+                              defaultValue={socketStore.oscRemotePort}
+                />
+              </InputGroup>
+            </Form.Group>
+
+            <Form.Group className="d-flex align-items-center" controlId="port-input">
+                <Form.Label className="flex-shrink-0 mb-0">Local OSC Port (UDP) </Form.Label>
+                <InputGroup className="ms-2">
+                  <Form.Control name="port-input"
+                                type="number"
+                                min="1"
+                                max="65535"
+                                required={true}
+                                onChange={handleLocalPortNumberChange}
+                                defaultValue={socketStore.oscLocalPort}
+                  />
+                </InputGroup>
+              </Form.Group>
+          </div>
 
           <SessionList />
 

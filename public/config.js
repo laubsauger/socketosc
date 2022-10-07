@@ -5,7 +5,8 @@ const config = {
   socketRoomPrefix: 'control',
   oscOverUDP: {
     localAddress: '0.0.0.0',
-    localPort: 57121,
+    localPort: 56121,
+    remotePort: 57121,
     metadata: true,
   },
 };

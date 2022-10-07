@@ -1,5 +1,6 @@
 import { action, observable, makeAutoObservable } from 'mobx';
 import { RootStore } from './rootStore';
+import config from "../config";
 
 export type ConnectionState = {
   connecting?: boolean;
@@ -62,6 +63,8 @@ export class SocketStore implements ISocketStore {
   @observable roomState = Object.assign({}, roomStateStub);
   @observable availableInstances:Instance[] = [];
   @observable currentInstance:Instance|undefined = undefined;
+  @observable oscLocalPort:number = config.oscOverUDP.localPort;
+  @observable oscRemotePort:number = config.oscOverUDP.remotePort;
 
   constructor(rootStore: RootStore) {
     makeAutoObservable(this);
@@ -98,5 +101,13 @@ export class SocketStore implements ISocketStore {
 
   @action setCurrentInstance(instance:Instance|undefined) {
     this.currentInstance = instance;
+  }
+
+  @action setOscLocalPort(localPort:number) {
+    this.oscLocalPort = localPort;
+  }
+
+  @action setOscRemotePort(remotePort:number) {
+    this.oscRemotePort = remotePort;
   }
 }

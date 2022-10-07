@@ -1,10 +1,10 @@
 const config = {
   webSocketHost: process.env.NODE_ENV === 'production' ? 'https://socket.osc.link' : 'http://localhost:8080',
-  socketRoomPrefix: `control`,
-  socketRoom: `control:1`,
+  socketRoomPrefix: 'control',
   oscOverUDP: {
-    localAddress: '127.0.0.1',
-    localPort: 57121,
+    localAddress: '0.0.0.0',
+    localPort: 56121,
+    remotePort: 57121,
     metadata: true,
   },
 };
