@@ -3,7 +3,7 @@ const { contextBridge, ipcRenderer } = require('electron');
 window.ipcRenderer = require('electron').ipcRenderer;
 
 let currentChannelReceiverListener;
-let validChannels = [ 'fromMain' ];
+let validChannels = [ 'pushLog', 'pushInfo', 'pushActivity' ];
 
 contextBridge.exposeInMainWorld('electronAPI', {
   setTitle: (title) => ipcRenderer.invoke('set-title', title),
@@ -12,7 +12,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   // serverLog: (message) => ipcRenderer.invoke('server-log', message),
   send: (channel, data) => {
     // whitelist channels
-    let validChannels = [ 'toMain' ];
+    // let validChannels = [ 'toMain' ];
     if (validChannels.includes(channel)) {
       ipcRenderer.send(channel, data);
     }

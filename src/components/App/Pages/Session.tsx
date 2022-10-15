@@ -3,7 +3,9 @@ import { observer } from 'mobx-react-lite';
 import SessionInfo from "../../SessionInfo";
 import {useStores} from "../../../hooks/useStores";
 import {useNavigate, useParams} from "react-router-dom";
-import {Button} from "react-bootstrap";
+import {Button, Col, Container, Row} from "react-bootstrap";
+import SessionLog from "../../SessionLog";
+import SessionState from "../../SessionState";
 
 const Session: React.FC = (props) => {
   const navigate = useNavigate();
@@ -34,12 +36,26 @@ const Session: React.FC = (props) => {
   }
 
   return (
-    <div className="Session">
-      <Button className="mt-3" onClick={onBtnStopServerClick}>Disconnect from Session</Button>
+    <div className="Session mt-4">
+      <Row>
+        { instanceId && socketStore.availableInstances.length &&
+          <Col xs={12} md={6}>
+            <SessionInfo currentSession={socketStore.availableInstances.filter(item => item.id === Number(instanceId))[0]}/>
+          </Col>
+        }
 
-      {  instanceId && socketStore.availableInstances.length &&
-        <SessionInfo currentSession={socketStore.availableInstances.filter(item => item.id === Number(instanceId))[0]}/>
-      }
+        <Col xs={12} md={6} className="text-center">
+          <Button className="mb-3" onClick={onBtnStopServerClick}>Disconnect from Session</Button>
+
+          <SessionState />
+        </Col>
+
+        <hr/>
+
+        <Col lg={12}>
+          <SessionLog />
+        </Col>
+      </Row>
 
       {/*<LinkButton path={`/session/${socketStore.currentInstance?.id}`} label={'Reconnect'} variant={'outline-warning'}/>*/}
     </div>

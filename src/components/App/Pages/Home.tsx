@@ -1,8 +1,7 @@
 import React, {useCallback} from 'react';
 import { observer } from 'mobx-react-lite';
-import {Card, Col, Form, InputGroup} from "react-bootstrap";
+import {Card, Col, Form, InputGroup, Row} from "react-bootstrap";
 import SessionList from "../../SessionList";
-import config from "../../../config";
 import {useStores} from "../../../hooks/useStores";
 
 const Home: React.FC = (props) => {
@@ -36,35 +35,38 @@ const Home: React.FC = (props) => {
             </div>
           </Card.Text>
 
-          <div className="bg-black rounded-3 p-2 d-flex justify-content-between">
-            <Form.Group className="d-flex align-items-center" controlId="port-input">
-              <Form.Label className="flex-shrink-0 mb-0">Remote OSC Port (UDP) </Form.Label>
-              <InputGroup className="ms-2">
-                <Form.Control name="port-input"
-                              type="number"
-                              min="1"
-                              max="65535"
-                              required={true}
-                              onChange={handleRemotePortNumberChange}
-                              defaultValue={socketStore.oscRemotePort}
-                />
-              </InputGroup>
-            </Form.Group>
-
-            <Form.Group className="d-flex align-items-center" controlId="port-input">
-                <Form.Label className="flex-shrink-0 mb-0">Local OSC Port (UDP) </Form.Label>
+          <Row className="bg-black rounded-3 p-2 d-flex justify-content-between">
+            <Col xs={12} lg={6}>
+              <Form.Group className="d-flex align-items-center" controlId="port-input">
+                <Form.Label className="flex-shrink-0 mb-0">Remote OSC Port (UDP) </Form.Label>
                 <InputGroup className="ms-2">
                   <Form.Control name="port-input"
                                 type="number"
                                 min="1"
                                 max="65535"
                                 required={true}
-                                onChange={handleLocalPortNumberChange}
-                                defaultValue={socketStore.oscLocalPort}
+                                onChange={handleRemotePortNumberChange}
+                                defaultValue={socketStore.oscRemotePort}
                   />
                 </InputGroup>
               </Form.Group>
-          </div>
+            </Col>
+            {/*<Col xs={12} lg={6}>*/}
+            {/*  <Form.Group className="d-flex align-items-center" controlId="port-input">*/}
+            {/*    <Form.Label className="flex-shrink-0 mb-0">Local OSC Port (UDP) </Form.Label>*/}
+            {/*    <InputGroup className="ms-2">*/}
+            {/*      <Form.Control name="port-input"*/}
+            {/*                    type="number"*/}
+            {/*                    min="1"*/}
+            {/*                    max="65535"*/}
+            {/*                    required={true}*/}
+            {/*                    onChange={handleLocalPortNumberChange}*/}
+            {/*                    defaultValue={socketStore.oscLocalPort}*/}
+            {/*      />*/}
+            {/*    </InputGroup>*/}
+            {/*  </Form.Group>*/}
+            {/*</Col>*/}
+          </Row>
 
           <SessionList />
 

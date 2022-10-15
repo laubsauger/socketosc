@@ -7,6 +7,9 @@ class SocketOSCServer {
   electronWindow;
   oscServer;
   socket;
+  sessionState = {
+    usedSlots: 0,
+  };
 
   constructor(electronWindow) {
     this.electronWindow = electronWindow;
@@ -16,7 +19,20 @@ class SocketOSCServer {
     console.log(message);
 
     if (this.electronWindow) {
-      this.electronWindow.webContents.send('fromMain', message);
+      this.electronWindow.webContents.send('pushLog', message);
+    }
+  }
+
+  pushSessionState(update) {
+    console.log(this.sessionState, update);
+
+    this.sessionState = {
+      ...this.sessionState,
+      ...update,
+    };
+
+    if (this.electronWindow) {
+      this.electronWindow.webContents.send('pushInfo', this.sessionState);
     }
   }
 
@@ -60,6 +76,8 @@ class SocketOSCServer {
     this.log('attempting to set up osc websocket port');
 
     const oscServer = new osc.UDPPort(config);
+
+    this.log(`Sending OSC data to remote port: ${config.remotePort}`);
 
     oscServer.on('ready', () => {
       this.log('Listening for incoming OSC on...');
@@ -105,6 +123,7 @@ class SocketOSCServer {
   }
 
   initSocketConnection(oscServer, webSocketHost, room) {
+
     this.log('osc setup complete. attempting to connect to: ' + webSocketHost);
 
     this.socket = io(webSocketHost, {
@@ -133,7 +152,7 @@ class SocketOSCServer {
 
     this.socket.on('OSC_JOIN_ACCEPTED', (data) => {
       console.log('OSC_JOIN_ACCEPTED', room, data);
-      // this.log('OSC_JOIN_ACCEPTED ' + room);
+      this.pushSessionState(data);
     });
 
     this.socket.on('OSC_JOIN_REJECTED', (data) => {
@@ -164,18 +183,29 @@ class SocketOSCServer {
       oscServer.send(createMessageArgs(
         payload.client_index,
         'Connected',
-        [{ type: 'T' }],
+        [{
+          type: 'i',
+          value: 1
+        }]
       ));
+
+      this.pushSessionState({ usedSlots: payload.usedSlots });
     });
 
     this.socket.on('OSC_CTRL_USER_LEFT', (payload) => {
       // console.log('OSC_CTRL_USER_LEFT', payload);
       this.log('OSC_CTRL_USER_LEFT ' + payload.client_index);
+
       oscServer.send(createMessageArgs(
         payload.client_index,
         'Connected',
-        [{ type: 'F' }]
+        [{
+          type: 'i',
+          value: 0
+        }]
       ));
+
+      this.pushSessionState({ usedSlots: payload.usedSlots });
     });
 
     // socket.on('DISCO_DIFFUSION_PROMPT', (payload) => {

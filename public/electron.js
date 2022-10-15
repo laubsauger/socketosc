@@ -31,7 +31,7 @@ async function handleServerStop (event, message) {
 function createWindow() {
   const win = new BrowserWindow({
     width: 800,
-    height: 800,
+    height: 750,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -57,9 +57,6 @@ app.whenReady().then(async () => {
 
   ipcMain.on('toMain', (event, args) => {
     console.log('received from renderer', args)
-    // const webContents = event.sender;
-    // const win = BrowserWindow.fromWebContents(webContents);
-    // win.webContents.send('fromMain', { EPIC: 'RESPONSE'});
   });
 
   createWindow();
