@@ -260,6 +260,69 @@ class SocketOSCServer {
             ]
           )
         ];
+      case 'motion':
+        return [
+          createMessageArgs(
+            payload.client_index,
+            `x_acc`,
+            [
+              {
+                type: 'i',
+                value: payload.x,
+              },
+            ]
+          ),
+          createMessageArgs(
+            payload.client_index,
+            `y_acc`,
+            [
+              {
+                type: 'i',
+                value: payload.y
+              },
+            ]
+          ),
+          createMessageArgs(
+            payload.client_index,
+            `z_acc`,
+            [
+              {
+                type: 'i',
+                value: payload.z
+              },
+            ]
+          ),
+          createMessageArgs(
+            payload.client_index,
+            `x_rot`,
+            [
+              {
+                type: 'i',
+                value: payload.rotation.alpha,
+              },
+            ]
+          ),
+          createMessageArgs(
+            payload.client_index,
+            `y_rot`,
+            [
+              {
+                type: 'i',
+                value: payload.rotation.beta,
+              },
+            ]
+          ),
+          createMessageArgs(
+            payload.client_index,
+            `z_rot`,
+            [
+              {
+                type: 'i',
+                value: payload.rotation.gamma,
+              },
+            ]
+          ),
+        ]
       case 'paint':
         return [
           createMessageArgs(

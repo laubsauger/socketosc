@@ -1,4 +1,4 @@
-# OSC.LINK
+ # OSC.LINK
 _______________
 
 OSC.LINK is a control interface for realtime interaction between a mobile or desktop browser, and the OSC protocol. It was designed for the rapid-prototyping of multi-user media installations, and simple extensible deployment for mobile phone interaction without the cumbersome steps of joining a network, downloading an app, or signing up for an account.
@@ -44,6 +44,9 @@ _________________
 
 ____________
 ### Changelog
+
+#### [v.0.0.16] 2022-10-15
+- [x] base impl for sending sensor data
 
 #### [v.0.0.15] 2022-10-15
 - [x] a script disables dragging for the browser when an osc.link  server is joined
