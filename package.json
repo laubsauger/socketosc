@@ -1,6 +1,6 @@
 {
   "name": "socket-server",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "private": true,
   "homepage": "./",
   "main": "public/electron.js",
