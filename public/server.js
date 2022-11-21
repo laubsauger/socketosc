@@ -260,6 +260,19 @@ class SocketOSCServer {
             ]
           )
         ];
+      case 'fader':
+        return [
+          createMessageArgs(
+            payload.client_index,
+            payload.id,
+            [
+              {
+                type: 'i',
+                value: payload.state
+              }
+            ]
+          )
+        ];
       case 'motion':
         return [
           createMessageArgs(

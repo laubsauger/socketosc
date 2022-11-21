@@ -29,7 +29,9 @@ export type Instance = {
     controls: {
       xy: boolean,
       buttons: number,
-      fader: number,
+      faders: number,
+      accelerometer: boolean,
+      gyroscope: boolean,
     }
   }
 }

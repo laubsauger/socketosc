@@ -5,7 +5,7 @@ OSC.LINK is a control interface for realtime interaction between a mobile or des
 
 By snapping a QR code or following a simple URL, user mobile devices are turned into input controllers that can send active and passive interaction data to a local client, and then fed to any platform that can recieve OSC, such as game engines, DAWs or media servers
 
-![screen1.png](screen1.png) ![screen2.png](screen2.png)
+![screen1.png](screen1.png) ![screen2.png](screen2.png) ![screen3.png](screen3.png)
 
 ___________
 
@@ -40,12 +40,12 @@ _________________
   - string float (optional submission button to send the string as a value)
   - dropdown menu
   - colorPicker (thumbnail with popup wheel or RGB/HSB faders)
-- Enable passive data from mobile users such as GPS, accelerometer/gyro, roll/tilt/yaw
+- Enable location/gps data
 
 ____________
 ### Changelog
 
-#### [v.0.0.16] 2022-10-15
+#### [v.0.0.16] 2022-11-20
 - [x] base impl for sending sensor data
 
 #### [v.0.0.15] 2022-10-15
