@@ -44,14 +44,16 @@ const SessionList = () => {
                     <Col lg={3} md={6} className="mb-3">
                       <h6 className="text-muted">Settings</h6>
                       <div>
-                        <div>slots: { instance.settings.slots }</div>
-                        <div>random pick: { JSON.stringify(instance.settings.randomPick) }</div>
+                        <div>slots: {instance.settings.slots}</div>
+                        <div>randomPick: {JSON.stringify(instance.settings.randomPick)}</div>
+                        <div>slotPick: {JSON.stringify(instance.settings.slotPick)}</div>
+                        <div>sequentialPick: {JSON.stringify(instance.settings.sequentialPick)}</div>
                       </div>
                     </Col>
                     <Col lg={3} md={6}>
                       <h6 className="text-muted">Controls</h6>
                       <div>
-                        { Object.entries(instance.settings.controls).map(([key, val]) =>
+                        {Object.entries(instance.settings.controls).map(([key, val]) =>
                           <div key={ key }>
                             <div>{ key }: {JSON.stringify(val)}</div>
                           </div>

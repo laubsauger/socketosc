@@ -25,13 +25,18 @@ export type Instance = {
   description: string,
   settings: {
     slots: number,
-    randomPick: boolean,
+    slotPick?: boolean,
+    sequentialPick?: boolean,
+    randomPick?: boolean,
     controls: {
-      xy: boolean,
-      buttons: number,
-      faders: number,
-      accelerometer: boolean,
-      gyroscope: boolean,
+      eden?: boolean,
+      name?: boolean,
+      text?: boolean,
+      xy?: boolean,
+      buttons?: number,
+      faders?: number,
+      accelerometer?: boolean,
+      gyroscope?: boolean,
     }
   }
 }

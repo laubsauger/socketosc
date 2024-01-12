@@ -20,7 +20,9 @@ const SessionInfo = (props:any) => {
         <h6 className="text-muted">Settings</h6>
         <div>
           <div>slots: { currentSession.settings.slots }</div>
-          <div>random pick: { JSON.stringify(currentSession.settings.randomPick) }</div>
+          <div>randomPick: { JSON.stringify(currentSession.settings.randomPick) }</div>
+          <div>slotPick: { JSON.stringify(currentSession.settings.slotPick) }</div>
+          <div>sequentialPick: { JSON.stringify(currentSession.settings.sequentialPick) }</div>
         </div>
       </Col>
       <Col lg={6} md={6}>
