@@ -397,6 +397,19 @@ class SocketOSCServer {
             ]
           )
         ]
+      case 'userName':
+        return [
+          createMessageArgs(
+            payload.client_index,
+            'userName',
+            [
+              {
+                type: 's',
+                value: payload.text,
+              }
+            ]
+          )
+        ]
       default:
         return [
           createMessageArgs(
