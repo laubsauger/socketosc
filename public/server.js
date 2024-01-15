@@ -8,6 +8,7 @@ class SocketOSCServer {
   oscServer;
   socket;
   sessionState = {
+    room: '',
     usedSlots: 0,
   };
 
@@ -56,6 +57,7 @@ class SocketOSCServer {
     this.log(`Started OSCUDP server. Listening to instance: ${instanceId} at port ${localUDPPort} | remotePort: ${remoteUDPPort}`);
 
     const room = `${config.socketRoomPrefix}:${instanceId}`;
+    this.sessionState.room = room
     this.initSocketConnection(this.oscServer, config.webSocketHost, room);
   }
 
@@ -68,7 +70,7 @@ class SocketOSCServer {
   }
 
   /**
-   * initialize OSC over UDP
+   * initialize osc over UDP
    * @params config {{}}
    * @returns {Promise<osc.UDPPort>}
    */
@@ -77,10 +79,10 @@ class SocketOSCServer {
 
     const oscServer = new osc.UDPPort(config);
 
-    this.log(`Sending OSC data to remote port: ${config.remotePort}`);
+    this.log(`Sending osc data to remote port: ${config.remotePort}`);
 
     oscServer.on('ready', () => {
-      this.log('Listening for incoming OSC on...');
+      this.log('Listening for incoming osc on...');
 
       const ipAddresses = getIPAddresses();
 
@@ -90,7 +92,9 @@ class SocketOSCServer {
     });
 
     oscServer.on('message', (oscMessage) => {
-      this.log(oscMessage);
+      this.log(`osc ⬅ ${JSON.stringify(oscMessage)}`);
+      this.log('ws  ⥤ OSC_HOST_MESSAGE ' + JSON.stringify(oscMessage));
+      this.socket.emit('OSC_HOST_MESSAGE', { data: oscMessage, room: this.sessionState.room });
     });
 
     oscServer.on('error', (err) => {
@@ -123,7 +127,6 @@ class SocketOSCServer {
   }
 
   initSocketConnection(oscServer, webSocketHost, room) {
-
     this.log('osc setup complete. attempting to connect to: ' + webSocketHost);
 
     this.socket = io(webSocketHost, {
@@ -134,15 +137,17 @@ class SocketOSCServer {
     });
 
     this.socket.on('connect', () => {
-      this.log('Successfully connected to ' + webSocketHost);
+      this.log('ws  ⬅ connect ' + JSON.stringify({webSocketHost, room}));
+      // this.log('Successfully connected to ' + webSocketHost);
       // this.log('Request join to control room: ' + room);
-
       this.socket.emit('OSC_JOIN_REQUEST', room);
+      this.log('ws  ⥤ OSC_JOIN_REQUEST ' + JSON.stringify({webSocketHost, room}));
     });
 
     this.socket.on('disconnect', (reason) => {
       this.log('!! Disconnected from ' + webSocketHost);
       console.log(reason);
+      this.log('ws  ⬅ disconnect ' + JSON.stringify({webSocketHost, reason}));
 
       // disconnect initiated by the server, reconnect manually
       if (reason === 'io server disconnect') {
@@ -152,33 +157,36 @@ class SocketOSCServer {
 
     this.socket.on('OSC_JOIN_ACCEPTED', (data) => {
       console.log('OSC_JOIN_ACCEPTED', room, data);
+      this.log('ws  ⬅ OSC_JOIN_ACCEPTED ' + JSON.stringify({room, data}));
       this.pushSessionState(data);
     });
 
     this.socket.on('OSC_JOIN_REJECTED', (data) => {
       console.log('OSC_JOIN_REJECTED', room, data);
+      this.log('ws  ⬅ OSC_JOIN_REJECTED ' + JSON.stringify({room, data}));
     });
 
     this.socket.on('OSC_JOINED', (data) => {
       console.log('OSC_JOINED', room, data);
+      this.log('ws  ⬅ OSC_JOINED ' + JSON.stringify({room, data}));
     });
 
     this.socket.on('OSC_CTRL_MESSAGE', (payload) => {
-      this.log('OSC_CTRL_MESSAGE ' + JSON.stringify(payload));
-      // console.log('OSC_CTRL_MESSAGE', payload);
-      const msgs = this.handleMessagePayload(payload);
+      this.log('ws  ⬅ OSC_CTRL_MESSAGE ' + JSON.stringify(payload));
+      const msgs = this.handleControlMessagePayload(payload);
 
       // console.log('MESSAGES', msgs.length);
 
       msgs.map(msg => {
-        console.log('sending osc message');
-        console.dir(msg, { depth: 2 })
+        // console.log('osc ⥤: sending osc message');
+        // console.dir(msg, { depth: 2 })
+        this.log('osc ⥤ OSC_CTRL_MESSAGE ' + JSON.stringify(msg));
         oscServer.send(msg);
       })
     });
 
     this.socket.on('OSC_CTRL_USER_JOINED', (payload) => {
-      this.log('OSC_CTRL_USER_JOINED ' + payload.client_index);
+      this.log('osc ⥤ OSC_CTRL_USER_JOINED ' + payload.client_index);
       // console.log('OSC_CTRL_USER_JOINED', payload);
       oscServer.send(createMessageArgs(
         payload.client_index,
@@ -194,7 +202,7 @@ class SocketOSCServer {
 
     this.socket.on('OSC_CTRL_USER_LEFT', (payload) => {
       // console.log('OSC_CTRL_USER_LEFT', payload);
-      this.log('OSC_CTRL_USER_LEFT ' + payload.client_index);
+      this.log('osc ⥤ OSC_CTRL_USER_LEFT ' + payload.client_index);
 
       oscServer.send(createMessageArgs(
         payload.client_index,
@@ -207,13 +215,6 @@ class SocketOSCServer {
 
       this.pushSessionState({ usedSlots: payload.usedSlots });
     });
-
-    // socket.on('DISCO_DIFFUSION_PROMPT', (payload) => {
-    //   console.log('DISCO_DIFFUSION_PROMPT', payload);
-    //   const msg = this.handleMessagePayload({ ...payload, message: 'discoDiffusion' });
-    //
-    //   oscServer.send(msg[0]);
-    // });
 
     this.socket.on('reconnect_attempt', (data) => {
       console.log('reconnect_attempt', data);
@@ -232,7 +233,7 @@ class SocketOSCServer {
     });
   };
 
-  handleMessagePayload(payload) {
+  handleControlMessagePayload(payload) {
     switch (payload.message) {
       case 'mouseDown':
         return [

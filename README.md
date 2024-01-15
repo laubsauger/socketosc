@@ -23,11 +23,8 @@ ______________
 _____________________
 
 ### TO DO / RFE wishlist:
-- [ ] add Join Random slot button, or make it so that Random:True servers only have one full sized button to join a slot
 - [ ] ability to host multiple local sessions, with per session IP/port configuration. checkboxes instead of joining a specific server
 - [ ] hostside configuration for external IP beyond hardcoded localhosst
-- [ ] host side dashboard for quick visual feedback to see number of slots/connections, indicate activity
-~~- [ ] ability to draw off the panel on desktopBrowser 2d pad, i.e. get clamped value based on local windows position not browser panel~~
 
 _________________
 ### Future Roadmap:

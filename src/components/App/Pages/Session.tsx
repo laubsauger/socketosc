@@ -6,6 +6,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {Button, Col, Container, Row} from "react-bootstrap";
 import SessionLog from "../../SessionLog";
 import SessionState from "../../SessionState";
+import LinkButton from '../../LinkButton';
 
 const Session: React.FC = (props) => {
   const navigate = useNavigate();
