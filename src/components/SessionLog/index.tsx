@@ -8,7 +8,7 @@ const SessionLog = () => {
   // @todo: throttle/batch this to not crash the webview when bursting lots (and avoid rerunning useEffect all the time)
   const onReceivePushLog = useCallback((data:any) => {
     const item = { message: data };
-    setLogItems([ ...logItems.slice(-100), item]);
+    setLogItems([ ...logItems.slice(-200), item]);
   }, [ logItems ]);
 
   useEffect(() => {

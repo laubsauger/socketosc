@@ -47,7 +47,6 @@ const Session: React.FC = (props) => {
 
         <Col xs={12} md={6} className="text-center">
           <Button className="mb-3" onClick={onBtnStopServerClick}>Disconnect from Session</Button>
-
           <SessionState />
         </Col>
 

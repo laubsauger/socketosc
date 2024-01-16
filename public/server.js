@@ -91,10 +91,39 @@ class SocketOSCServer {
       });
     });
 
+    /**
+     * @param address {string}
+     * @param args {{ type: 'f'|'s'|'i'|'b', value: string|number|boolean }[]}
+     * @return {{ address, args: {[key: string]: string|number}}
+     */
+    const parseHostMessagePayload = ({ address, args }) => {
+      if (address !== '/gs') {
+        console.log('Unhandled address: ' + address);
+        this.log('Unhandled address: ' + address)
+        return
+      }
+
+      const parsedArgs = args.map(arg => {
+        const parsedValue = JSON.parse(arg.value)
+        return {
+          phase: parsedValue.phase,
+          data: parsedValue.data,
+        }
+      })
+
+      // console.log(parsedArgs)
+
+      return {
+        gameState: parsedArgs[0]
+      }
+    }
+
     oscServer.on('message', (oscMessage) => {
       this.log(`osc ⬅ ${JSON.stringify(oscMessage)}`);
       this.log('ws  ⥤ OSC_HOST_MESSAGE ' + JSON.stringify(oscMessage));
-      this.socket.emit('OSC_HOST_MESSAGE', { data: oscMessage, room: this.sessionState.room });
+
+      const parsedOscMessage = parseHostMessagePayload(oscMessage)
+      this.socket.emit('OSC_HOST_MESSAGE', { data: parsedOscMessage, room: this.sessionState.room });
     });
 
     oscServer.on('error', (err) => {
