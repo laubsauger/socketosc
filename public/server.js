@@ -10,6 +10,7 @@ class SocketOSCServer {
   sessionState = {
     room: '',
     usedSlots: 0,
+    lastHostMessage: {}
   };
 
   constructor(electronWindow) {
@@ -111,8 +112,6 @@ class SocketOSCServer {
         }
       })
 
-      // console.log(parsedArgs)
-
       return {
         gameState: parsedArgs[0]
       }
@@ -123,7 +122,9 @@ class SocketOSCServer {
       this.log('ws  ⥤ OSC_HOST_MESSAGE ' + JSON.stringify(oscMessage));
 
       const parsedOscMessage = parseHostMessagePayload(oscMessage)
-      this.socket.emit('OSC_HOST_MESSAGE', { data: parsedOscMessage, room: this.sessionState.room });
+      const hostMessage = { data: parsedOscMessage, room: this.sessionState.room };
+      this.sessionState.lastHostMessage = hostMessage;
+      this.socket.emit('OSC_HOST_MESSAGE', hostMessage);
     });
 
     oscServer.on('error', (err) => {
@@ -227,6 +228,7 @@ class SocketOSCServer {
       ));
 
       this.pushSessionState({ usedSlots: payload.usedSlots });
+      this.socket.emit('OSC_HOST_MESSAGE', this.sessionState.lastHostMessage);
     });
 
     this.socket.on('OSC_CTRL_USER_LEFT', (payload) => {
