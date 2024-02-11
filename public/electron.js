@@ -30,7 +30,7 @@ async function handleServerStop (event, message) {
 
 function createWindow() {
   const win = new BrowserWindow({
-    width: 800,
+    width: 1024,
     height: 750,
     webPreferences: {
       nodeIntegration: false,

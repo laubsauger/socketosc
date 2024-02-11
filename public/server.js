@@ -228,6 +228,8 @@ class SocketOSCServer {
       ));
 
       this.pushSessionState({ usedSlots: payload.usedSlots });
+
+      // pushing the last host message on join to move late comers to the current phase instead of leaving them hanging
       this.socket.emit('OSC_HOST_MESSAGE', this.sessionState.lastHostMessage);
     });
 
@@ -438,6 +440,19 @@ class SocketOSCServer {
               {
                 type: 's',
                 value: payload.text,
+              }
+            ]
+          )
+        ]
+      case 'game_start':
+        return [
+          createMessageArgs(
+            payload.client_index,
+            payload.message,
+            [
+              {
+                type: 's',
+                value: payload.mode,
               }
             ]
           )

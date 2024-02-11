@@ -34,7 +34,8 @@ const SessionList = () => {
           <Accordion >
             { socketStore.availableInstances.map(instance =>
               <Accordion.Item key={instance.id} eventKey={String(instance.id)}>
-                <Accordion.Header>{ instance.id } :: { instance.name }</Accordion.Header>
+                <Accordion.Header>{ instance.name }</Accordion.Header>
+                {/*<Accordion.Header>{ instance.name } :: { instance.id } :::: { instance.id } :: </Accordion.Header>*/}
                 <Accordion.Body>
                   <Row>
                     <Col lg={6} md={12} className="mb-3">
