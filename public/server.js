@@ -422,7 +422,7 @@ class SocketOSCServer {
         return [
           createMessageArgs(
             payload.client_index,
-            'text',
+            payload.id,
             [
               {
                 type: 's',
