@@ -2,7 +2,7 @@ process.env.NODE_OPTIONS = undefined;
 
 const path = require('path');
 const { app, BrowserWindow, ipcMain } = require('electron');
-const isDev = require('electron-is-dev');
+const isDev = import('electron-is-dev');
 const SocketOSCServer = require('./server');
 
 let socketOscServerInstance;

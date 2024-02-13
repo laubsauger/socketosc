@@ -1,4 +1,4 @@
-const isDev = require('electron-is-dev');
+const isDev = import('electron-is-dev');
 
 const config = {
   webSocketHost: !isDev ? 'https://socket.osc.link' : 'http://localhost:8080',
