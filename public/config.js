@@ -1,6 +1,4 @@
-const isDev = import('electron-is-dev');
-
-const config = {
+const config = (isDev) => ({
   webSocketHost: !isDev ? 'https://socket.osc.link' : 'http://localhost:8080',
   socketRoomPrefix: 'control',
   oscOverUDP: {
@@ -9,6 +7,6 @@ const config = {
     remotePort: 57121,
     metadata: true,
   },
-};
+});
 
 module.exports = config;

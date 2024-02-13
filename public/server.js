@@ -13,8 +13,10 @@ class SocketOSCServer {
     lastHostMessage: {}
   };
 
-  constructor(electronWindow) {
+  constructor(electronWindow, isDev) {SocketOSCServer
     this.electronWindow = electronWindow;
+    this.isDev = isDev;
+    this.config = config(isDev)
   }
 
   log(message) {

@@ -2,7 +2,6 @@ process.env.NODE_OPTIONS = undefined;
 
 const path = require('path');
 const { app, BrowserWindow, ipcMain } = require('electron');
-const isDev = import('electron-is-dev');
 const SocketOSCServer = require('./server');
 
 let socketOscServerInstance;
@@ -18,8 +17,11 @@ async function handleServerStart (event, instanceId, localPort, remotePort) {
   const win = BrowserWindow.fromWebContents(webContents);
 
   console.log('handleServerStart', instanceId);
-  socketOscServerInstance = new SocketOSCServer(win);
-  await socketOscServerInstance.init(instanceId, localPort, remotePort);
+
+  import('electron-is-dev').then(async (isDev) => {
+    socketOscServerInstance = new SocketOSCServer(win, isDev);
+    await socketOscServerInstance.init(instanceId, localPort, remotePort);
+  })
 }
 
 async function handleServerStop (event, message) {
@@ -39,15 +41,17 @@ function createWindow() {
     },
   });
 
-  win.loadURL(
-    isDev
-      ? 'http://localhost:3000'
-      : `file://${path.join(__dirname, '../build/index.html')}`
-  );
+  import('electron-is-dev').then(async (isDev) => {
+    win.loadURL(
+      isDev
+        ? 'http://localhost:3000'
+        : `file://${path.join(__dirname, '../build/index.html')}`
+    );
 
-  if (isDev) {
-    win.webContents.openDevTools({ mode: 'detach' });
-  }
+    if (isDev) {
+      win.webContents.openDevTools({ mode: 'detach' });
+    }
+  })
 }
 
 app.whenReady().then(async () => {
