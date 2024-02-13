@@ -1,8 +1,9 @@
 {
   "name": "socket-server",
-  "version": "0.0.32",
+  "version": "0.0.33",
   "private": true,
   "homepage": "./",
+  "type": "module",
   "main": "public/electron.js",
   "description": "socketosc server wrapped in electron",
   "scripts": {
@@ -42,6 +43,7 @@
     ]
   },
   "dependencies": {
+    "@electron-toolkit/preload": "^3.0.0",
     "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^14.2.1",
     "@testing-library/user-event": "^14.5.2",

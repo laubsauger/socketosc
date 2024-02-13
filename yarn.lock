@@ -1483,6 +1483,11 @@
   dependencies:
     chrome-trace-event "^1.0.3"
 
+"@electron-toolkit/preload@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@electron-toolkit/preload/-/preload-3.0.0.tgz#34a801a7038e80fa7dd41cd5d114ce5b0ae3ffc4"
+  integrity sha512-DTyvNGits43J1RiQGFN00/OxjjcTcozLWMjgQBANt97FFptEYiLVasq7kMC24nMwwoOpdDYY9CE6C+4wQJ55/w==
+
 "@electron/asar@^3.2.1", "@electron/asar@^3.2.7":
   version "3.2.8"
   resolved "https://registry.yarnpkg.com/@electron/asar/-/asar-3.2.8.tgz#2ea722f3452583dbd4ffdcc4b4f5dc903f1d8178"
