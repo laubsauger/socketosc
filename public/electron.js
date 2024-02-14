@@ -1,12 +1,9 @@
 process.env.NODE_OPTIONS = undefined;
-import path from 'path'
-import { app, BrowserWindow, ipcMain } from 'electron'
-import isDev from 'electron-is-dev'
-import SocketOSCServer from './server.js'
-import { fileURLToPath } from 'url';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const path = require('path');
+const { app, BrowserWindow, ipcMain } = require('electron');
+const isDev = require('electron-is-dev');
+const SocketOSCServer = require('./server');
 
 let socketOscServerInstance;
 
@@ -31,7 +28,7 @@ async function handleServerStop (event, message) {
 }
 
 
-async function createWindow() {
+function createWindow() {
   const win = new BrowserWindow({
     width: 1024,
     height: 750,
@@ -42,9 +39,7 @@ async function createWindow() {
     },
   });
 
-  console.log(isDev)
-
-  await win.loadURL(
+  win.loadURL(
     isDev
       ? 'http://localhost:3000'
       : `file://${path.join(__dirname, '../build/index.html')}`

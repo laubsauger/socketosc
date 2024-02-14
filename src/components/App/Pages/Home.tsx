@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 const Home: React.FC = (props) => {
   const { socketStore } = useStores();
 
-  const handleLocalPortNumberChange = useCallback((ev:React.ChangeEvent<HTMLInputElement>) => {
+  const handleLocalPortNumberChange = useCallback((ev) => {
     const portNumber = Number(ev.target.value);
 
     if (portNumber) {
@@ -16,7 +16,7 @@ const Home: React.FC = (props) => {
     }
   }, [socketStore]);
 
-  const handleRemotePortNumberChange = useCallback((ev:React.ChangeEvent<HTMLInputElement>) => {
+  const handleRemotePortNumberChange = useCallback((ev) => {
     const portNumber = Number(ev.target.value);
 
     if (portNumber) {

@@ -1,7 +1,7 @@
-import io from 'socket.io-client'
-import os from 'os'
-import osc from 'osc'
-import config from './config.js'
+const io = require('socket.io-client');
+const os = require('os');
+const osc = require('osc');
+const config = require('./config');
 
 class SocketOSCServer {
   electronWindow;
@@ -422,7 +422,7 @@ class SocketOSCServer {
         return [
           createMessageArgs(
             payload.client_index,
-            'text',
+            payload.id,
             [
               {
                 type: 's',
@@ -513,4 +513,4 @@ const capitalizeFirstChar = (inputString) => {
   return inputString.charAt(0).toUpperCase() + inputString.slice(1).toLowerCase();
 }
 
-export default SocketOSCServer;
+module.exports = SocketOSCServer;

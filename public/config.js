@@ -1,4 +1,4 @@
-import isDev from 'electron-is-dev'
+const isDev = require('electron-is-dev');
 
 const config = {
   webSocketHost: !isDev ? 'https://socket.osc.link' : 'http://localhost:8080',
@@ -11,4 +11,4 @@ const config = {
   },
 };
 
-export default config
+module.exports = config;
