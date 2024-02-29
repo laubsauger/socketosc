@@ -457,6 +457,19 @@ class SocketOSCServer {
             ]
           )
         ]
+      case 'action':
+        return [
+          createMessageArgs(
+            payload.client_index,
+            payload.type,
+            [
+              {
+                type: 's',
+                value: payload.value,
+              }
+            ]
+          )
+        ]
       default:
         return [
           createMessageArgs(
