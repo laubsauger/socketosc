@@ -282,6 +282,7 @@ class SocketOSCServer {
           )
         ];
       case 'button':
+      case 'toggle':
         return [
           createMessageArgs(
             payload.client_index,
@@ -294,6 +295,7 @@ class SocketOSCServer {
             ]
           )
         ];
+
       case 'fader':
         return [
           createMessageArgs(
